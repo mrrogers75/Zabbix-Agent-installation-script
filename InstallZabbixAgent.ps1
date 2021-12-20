@@ -3,7 +3,7 @@ Start-Transcript -Path "C:\WINDOWS\TEMP\Zabbix-$($Env:COMPUTERNAME).log" -Append
 
 #Location for endpoint where the agent will be installed and unc path where installion files are located and desired version check
 $zabbixInstallPath = "C:\ZabbixAgent"
-$zabbixUncPath = "\\Servername\ZabbixAgent\*"
+$zabbixUncPath = "\\Servername\ZabbixAgent\"
 
 #GetVersion to install from UNC path
 #$DesiredVersion= "4.0.0.85308"
@@ -13,7 +13,7 @@ $DesiredVersion=[System.Diagnostics.FileVersionInfo]::GetVersionInfo("$zabbixUnc
 if (!(Test-Path -Path $zabbixInstallPath))
 {
     New-Item $zabbixInstallPath -ItemType Directory
-    Copy-Item $zabbixUncPath $zabbixInstallPath -Recurse
+    Copy-Item "$zabbixUncPath\*" $zabbixInstallPath -Recurse
 
     #Checks for 32-bit or 64-bit windows and then installs the proper agent as a service and starts it.
 if ([System.IntPtr]::Size -eq 4)
@@ -41,7 +41,7 @@ elseif ($DesiredVersion -gt [System.Diagnostics.FileVersionInfo]::GetVersionInfo
     Start-Process -FilePath "$zabbixInstallPath\bin\win64\zabbix_agentd.exe" -ArgumentList "-c $zabbixInstallPath\conf\zabbix_agentd.win.conf -d" -NoNewWindow
     Start-Sleep -Seconds 2
 
-    Copy-Item $zabbixUncPath $zabbixInstallPath -Recurse -Force
+    Copy-Item "$zabbixUncPath\*" $zabbixInstallPath -Recurse -Force
 
     Start-Process -FilePath "$zabbixInstallPath\bin\win64\zabbix_agentd.exe" -ArgumentList "-c $zabbixInstallPath\conf\zabbix_agentd.win.conf -i" -NoNewWindow
     Start-Sleep -Seconds 2
@@ -59,7 +59,7 @@ elseif ($DesiredVersion -gt [System.Diagnostics.FileVersionInfo]::GetVersionInfo
     Start-Process -FilePath "$zabbixInstallPath\bin\win32\zabbix_agentd.exe" -ArgumentList "-c $zabbixInstallPath\conf\zabbix_agentd.win.conf -d" -NoNewWindow
     Start-Sleep -Seconds 2
 
-    Copy-Item $zabbixUncPath $zabbixInstallPath -Recurse -Force
+    Copy-Item "$zabbixUncPath\*" $zabbixInstallPath -Recurse -Force
 
     Start-Process -FilePath "$zabbixInstallPath\bin\win32\zabbix_agentd.exe" -ArgumentList "-c $zabbixInstallPath\conf\zabbix_agentd.win.conf -i" -NoNewWindow
     Start-Sleep -Seconds 2
