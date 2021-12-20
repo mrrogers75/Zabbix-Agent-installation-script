@@ -4,7 +4,10 @@ Start-Transcript -Path "C:\WINDOWS\TEMP\Zabbix-$Env:COMPUTERNAME.log" -Append -N
 #Location for endpoint where the agent will be installed and unc path where installion files are located and desired version check
 $zabbixInstallPath = "C:\ZabbixAgent"
 $zabbixUncPath = "\\Servername\ZabbixAgent\*"
-$DesiredVersion= "4.0.0.85308"
+
+#GetVersion to install from UNC path
+#$DesiredVersion= "4.0.0.85308"
+$DesiredVersion=[System.Diagnostics.FileVersionInfo]::GetVersionInfo("$zabbixUncPath\bin\win64\zabbix_agentd.exe").FileVersion
 
 #create agent directory if it doesn't exists and copy Zabbix agent to server
 if (!(Test-Path -Path $zabbixInstallPath))
