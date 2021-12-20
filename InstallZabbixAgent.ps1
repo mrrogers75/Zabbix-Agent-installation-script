@@ -1,5 +1,5 @@
 ﻿#start logging to log file
-Start-Transcript -Path "C:\WINDOWS\TEMP\Zabbix-$Env:COMPUTERNAME.log" -Append -NoClobber -IncludeInvocationHeader
+Start-Transcript -Path "C:\WINDOWS\TEMP\Zabbix-$($Env:COMPUTERNAME).log" -Append -NoClobber -IncludeInvocationHeader
 
 #Location for endpoint where the agent will be installed and unc path where installion files are located and desired version check
 $zabbixInstallPath = "C:\ZabbixAgent"
@@ -31,7 +31,7 @@ else
 }
 
 #check if there is a new Zabbix Agent to install 64-bit check
-elseif ("$DesiredVersion" -gt [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$zabbixInstallPath\bin\win64\zabbix_agentd.exe").FileVersion)
+elseif ($DesiredVersion -gt [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$zabbixInstallPath\bin\win64\zabbix_agentd.exe").FileVersion)
 {
     Write-Host "New Version Found Starting Update"
 
@@ -49,7 +49,7 @@ elseif ("$DesiredVersion" -gt [System.Diagnostics.FileVersionInfo]::GetVersionIn
 }
 
 #check if there is a new Zabbix Agent to install 32-bit check
-elseif ("$DesiredVersion" -gt [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$zabbixInstallPath\bin\win32\zabbix_agentd.exe").FileVersion)
+elseif ($DesiredVersion -gt [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$zabbixInstallPath\bin\win32\zabbix_agentd.exe").FileVersion)
 {
     Write-Host "New Version Found Starting Update"
 
